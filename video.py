@@ -10,7 +10,6 @@ while True:
         theta1 = calc_theta1(
             Detected_ArUco_markers
         )  ## finding orientation of aruco with respective to the menitoned scale in problem statement
-        print(theta1)
         img = mark_ArUco(img, Detected_ArUco_markers, angle, theta1)
     cv2.imshow("Image", img)
     key = cv2.waitKey(1)
