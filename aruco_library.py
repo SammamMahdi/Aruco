@@ -30,7 +30,43 @@ def detect_ArUco(img):
             Detected_ArUco_markers.update({ids[0]: corners})
     return Detected_ArUco_markers
 
+def calc_theta1(Detected_ArUco_markers):
+    if 0 in Detected_ArUco_markers and 1 in Detected_ArUco_markers:
+        corners0 = Detected_ArUco_markers[0]
+        tl0 = corners0[0][0]  # top left
+        tr0 = corners0[0][1]  # top right
+        br0 = corners0[0][2]  # bottom right
+        bl0 = corners0[0][3]  # bottom left
+        centre0 = (tl0[0] + tr0[0] + bl0[0] + br0[0]) / 4, -(
+            (tl0[1] + tr0[1] + bl0[1] + br0[1]) / 4
+        )
 
+        corners1 = Detected_ArUco_markers[1]
+        tl1 = corners1[0][0]  # top left
+        tr1 = corners1[0][1]  # top right
+        br1 = corners1[0][2]  # bottom right
+        bl1 = corners1[0][3]  # bottom left
+
+        centre1 = (tl1[0] + tr1[0] + bl1[0] + br1[0]) / 4, -(
+            (tl1[1] + tr1[1] + bl1[1] + br1[1]) / 4
+        )
+        try:
+            angle = round(
+                math.degrees(
+                    np.arctan((centre0[1] - centre1[1]) / (centre0[0] - centre1[0]))
+                )
+            )
+        except:
+            # add some conditions for 90 and 270
+            if centre0[1] > centre1[1]:
+                angle = 90
+            elif centre0[1] < centre0[1]:
+                angle = 270
+        if centre0[0] >= centre1[0] and centre0[1] < centre1[1]:
+            angle = 360 + angle
+        elif centre0[0] < centre1[0]:
+            angle = 180 + angle
+        return angle
 def Calculate_orientation_in_degree(Detected_ArUco_markers):
     ## function to calculate orientation of ArUco with respective to the scale mentioned in problem statement
     ## argument: Detected_ArUco_markers  is the dictionary returned by the function detect_ArUco(img)
