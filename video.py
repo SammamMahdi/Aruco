@@ -13,4 +13,6 @@ while True:
         print(theta1)
         img = mark_ArUco(img, Detected_ArUco_markers, angle, theta1)
     cv2.imshow("Image", img)
-    cv2.waitKey(1)
+    key = cv2.waitKey(1)
+    if key == ord("q"):
+        break
